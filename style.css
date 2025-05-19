@@ -213,15 +213,12 @@ body {
     background-color: rgba(0, 0, 0, 0.4); /* Make background a bit more opaque for visibility */
     user-select: none;
 
-    /* Reset CSS properties that might inherit from global theme */
+    /* Reset CSS variables here so they don't inherit global theme */
     /* The *inline styles* from JS will provide the specific preset look */
-    color: initial !important; /* Use !important as a last resort if needed for specificity */
-    text-shadow: initial !important;
-    font-family: initial !important;
-    filter: initial !important;
-    font-size: initial !important; /* Ensure font size from inline style applies */
-    line-height: initial !important; /* Ensure line height from inline style applies */
-
+    color: initial;
+    text-shadow: initial;
+    font-family: initial;
+    filter: initial; /* Reset filter too */
 
     /* Flexbox for vertical centering */
     display: flex;
@@ -251,79 +248,48 @@ body {
 }
 
 
-/* --- Mobile Optimizations --- */
+/* Responsive adjustment for smaller screens */
 @media (max-width: 768px) {
     .tempad-container {
         flex-direction: column; /* Stack screen and menu vertically */
-        height: 100vh; /* Maintain full height */
-        width: 100%; /* Take full width */
+        height: auto; /* Auto height when stacked */
+        width: 98%;
     }
      .tempad-menu-container {
          width: 100%; /* Full width when stacked */
          flex-direction: row; /* Arrange menu items horizontally */
-         justify-content: center; /* Center items horizontally */
-         padding: 10px 5px; /* Adjust padding */
-         height: 60px; /* Give it a fixed height */
-         max-height: 60px; /* Ensure max height is also fixed */
-         overflow-y: hidden; /* Hide vertical overflow */
-         overflow-x: auto; /* Enable horizontal scrolling for presets */
+         justify-content: space-around; /* Space out items */
+         padding: 10px;
+         max-height: auto;
+         overflow-y: visible; /* Remove vertical scrollbar */
          border-top: 5px solid var(--tempad-brown); /* Separator */
-         flex-wrap: nowrap; /* Prevent wrapping in the horizontal menu */
-         align-items: center; /* Vertically center row content */
      }
-
-     /* Hide default scrollbar on mobile horizontal menu */
-     .tempad-menu-container::-webkit-scrollbar { display: none; }
-     .tempad-menu-container { -ms-overflow-style: none; scrollbar-width: none; }
-
-
      .tempad-menu-container h2 {
-         display: none; /* Hide title on small screens to save space */
+         display: none; /* Hide title on small screens */
      }
      #presetButtons {
          flex-direction: row; /* Arrange preset names horizontally */
-         flex-wrap: nowrap; /* Prevent wrapping */
-         gap: 5px; /* Smaller gap */
-         max-height: none; /* Remove max height */
-         height: 100%; /* Fill the height of the menu container for scrolling */
-         overflow-y: hidden; /* Hide vertical overflow */
-         overflow-x: visible; /* Allow horizontal overflow for container scroll */
+         flex-wrap: wrap; /* Allow wrapping */
+         gap: 5px;
+         max-height: auto;
+         overflow-y: visible; /* Remove vertical scrollbar */
          padding-right: 0;
-         justify-content: flex-start; /* Align buttons to the start for scrolling */
-         align-items: center; /* Vertically center buttons within the row */
-         padding-left: 0; /* Remove padding left */
+         justify-content: center;
      }
-
+     #presetButtons::-webkit-scrollbar { display: none; }
+     #presetButtons { -ms-overflow-style: none; scrollbar-width: none; }
 
      .preset-name {
-         flex-shrink: 0; /* Prevent shrinking */
-         flex-grow: 0; /* Prevent growing */
-         min-width: 90px; /* Ensure a minimum width for tapping */
-         font-size: 0.8em; /* Slightly smaller font */
-         padding: 8px 10px; /* Adjust padding for touch */
-         text-align: center; /* Center text in buttons */
-         white-space: nowrap; /* Keep text on one line */
-         text-overflow: ellipsis; /* Add ellipsis if text overflows */
-         overflow: hidden; /* Hide overflow */
-         display: flex; /* Keep flexbox for centering */
-         justify-content: center; /* Center text horizontally */
-         align-items: center; /* Center text vertically */
-     }
-
-     #outputCanvas {
-         font-size: 14px; /* Slightly smaller font for more content on screen */
-         padding: 15px; /* Adjust padding */
+         min-width: auto; /* Allow names to shrink */
+         font-size: 0.8em;
+         padding: 6px 10px;
+         text-align: center; /* Center text in small buttons */
      }
 
      .input-area {
-         padding: 8px 15px; /* Adjust padding */
+         padding: 10px 15px;
      }
-
-     .prompt-char {
-         font-size: 1em; /* Adjust prompt character size */
-     }
-
      #inputText {
-         font-size: 0.9em; /* Adjust input text size */
+         width: auto; /* Auto width */
      }
 }
