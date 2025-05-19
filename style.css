@@ -263,11 +263,13 @@ body {
          flex-direction: row; /* Arrange menu items horizontally */
          justify-content: center; /* Center items horizontally */
          padding: 10px 5px; /* Adjust padding */
-         max-height: 80px; /* Limit height to prevent it from taking too much vertical space */
+         height: 60px; /* Give it a fixed height */
+         max-height: 60px; /* Ensure max height is also fixed */
          overflow-y: hidden; /* Hide vertical overflow */
          overflow-x: auto; /* Enable horizontal scrolling for presets */
          border-top: 5px solid var(--tempad-brown); /* Separator */
          flex-wrap: nowrap; /* Prevent wrapping in the horizontal menu */
+         align-items: center; /* Vertically center row content */
      }
 
      /* Hide default scrollbar on mobile horizontal menu */
@@ -283,16 +285,19 @@ body {
          flex-wrap: nowrap; /* Prevent wrapping */
          gap: 5px; /* Smaller gap */
          max-height: none; /* Remove max height */
+         height: 100%; /* Fill the height of the menu container for scrolling */
          overflow-y: hidden; /* Hide vertical overflow */
          overflow-x: visible; /* Allow horizontal overflow for container scroll */
          padding-right: 0;
          justify-content: flex-start; /* Align buttons to the start for scrolling */
-         align-items: stretch; /* Ensure items stretch to fill row height */
+         align-items: center; /* Vertically center buttons within the row */
+         padding-left: 0; /* Remove padding left */
      }
 
 
      .preset-name {
          flex-shrink: 0; /* Prevent shrinking */
+         flex-grow: 0; /* Prevent growing */
          min-width: 90px; /* Ensure a minimum width for tapping */
          font-size: 0.8em; /* Slightly smaller font */
          padding: 8px 10px; /* Adjust padding for touch */
