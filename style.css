@@ -1,0 +1,295 @@
+/* Define CSS Variables for TemPad Theme */
+:root {
+    --tempad-orange: #ff9800; /* TemPad Orange */
+    --tempad-orange-rgb: 255,152,0;
+    --tempad-dark-orange: #f57c00; /* Darker Orange Accent */
+    --tempad-dark-orange-rgb: 245,124,0;
+    --tempad-brown: #795548; /* TemPad Brown */
+    --tempad-brown-rgb: 121,85,72;
+    --tempad-dark-brown: #5d4037; /* Dark Brown Accent */
+    --tempad-dark-brown-rgb: 93,64,55;
+    --tempad-black: #212121; /* TemPad Black */
+    --tempad-black-rgb: 33,33,33;
+    /* --tempad-grid-color is now themed, see below */
+    --tempad-font: 'Roboto Mono', monospace; /* A common monospaced font */
+    --tempad-ui-font: 'Arial', sans-serif; /* A fallback for UI text */
+
+    /* Default Theme Variables (Applied on load) */
+    --theme-color: var(--tempad-orange);
+    --theme-color-rgb: var(--tempad-orange-rgb);
+    --theme-bg: var(--tempad-black);
+    --theme-bg-rgb: var(--tempad-black-rgb);
+    --theme-accent: var(--tempad-dark-orange);
+    --theme-accent-rgb: var(--tempad-dark-orange-rgb);
+    --theme-font: var(--tempad-font);
+    --theme-grid-color: rgba(var(--tempad-orange-rgb, 255,152,0), 0.2); /* Default grid color using theme */
+    --theme-menu-bg: var(--tempad-brown); /* Default menu background theme */
+    --theme-title-color: var(--tempad-orange); /* Default title color theme */
+}
+
+body {
+    margin: 0;
+    overflow: hidden; /* Prevent scrollbars */
+    background-color: #101010; /* Static very dark background behind full-screen TemPad */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: var(--tempad-ui-font); /* Use UI font for main body text */
+}
+
+/* TemPad Container - Now Full Screen */
+.tempad-container {
+    display: flex;
+    width: 100%; /* Full width */
+    height: 100vh; /* Full viewport height */
+    max-width: none; /* Remove max-width */
+    border: none; /* Remove casing border */
+    border-radius: 0; /* Remove casing border radius */
+    overflow: hidden;
+    box-shadow: none; /* Remove box shadow */
+    background-color: var(--tempad-dark-brown); /* Outer casing color (now bg) */
+    box-sizing: border-box;
+}
+
+/* TemPad Screen - Takes remaining width */
+.tempad-screen {
+    flex-grow: 1; /* Take up remaining space */
+    display: flex;
+    flex-direction: column; /* Stack output and input */
+    background-color: var(--theme-bg); /* Screen background */
+    color: var(--theme-color); /* Screen text color */
+    position: relative;
+    transition: background-color 0.5s ease, color 0.5s ease; /* Theme transition */
+    overflow: hidden;
+    font-family: var(--theme-font); /* Use theme font for screen content */
+}
+
+#outputCanvas {
+    flex-grow: 1; /* Fill the top area */
+    padding: 20px; /* Padding inside the screen */
+    box-sizing: border-box;
+    overflow-y: auto; /* Enable scrolling for messages */
+    overflow-x: hidden; /* Hide horizontal overflow */
+    user-select: text;
+    white-space: pre-wrap; /* Respect whitespace and wrap */
+    word-wrap: break-word; /* Break long words */
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.4;
+    position: relative; /* Needed for absolute positioning of grid if used differently */
+
+    /* Grid background uses themed variable */
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 19px, var(--theme-grid-color) 20px), repeating-linear-gradient(90deg, transparent, transparent 19px, var(--theme-grid-color) 20px);
+     background-size: 20px 20px;
+     transition: color 0.5s ease, text-shadow 0.5s ease, border 0.5s ease, filter 0.5s ease, font-size 0.5s ease, line-height 0.5s ease, font-family 0.5s ease, background-image 0.5s ease; /* Smooth transitions including background-image */
+
+    /* Add moving grid animation */
+    animation: moveGrid 5s linear infinite; /* Increased speed (5s duration) */
+    background-position: 0 0; /* Starting position */
+}
+
+/* Keyframes for moving grid animation (adjust 'to' value for speed/direction) */
+@keyframes moveGrid {
+    from { background-position: 0 0; }
+    to { background-position: 40px 40px; } /* Move diagonally by two grid cells */
+}
+
+/* Style for sent messages */
+.sent-message {
+    color: var(--theme-color); /* Use theme color for sent text */
+    font-family: var(--theme-font); /* Use theme font */
+    white-space: pre-wrap; /* Respect whitespace */
+    word-wrap: break-word; /* Break long words */
+    margin-bottom: 5px; /* Space between messages */
+    display: block; /* Each message on its own line */
+    opacity: 0; /* Start hidden for fade-in */
+    animation: fadeInMessage 0.3s ease forwards; /* Fade-in animation */
+    padding-left: 5px; /* Subtle indent */
+}
+
+@keyframes fadeInMessage {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.input-area {
+    flex-shrink: 0; /* Don't shrink */
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgba(var(--theme-bg-rgb, 0,0,0), 0.8); /* Input background using theme */
+    border-top: 1px solid var(--theme-accent); /* Separator using theme accent */
+    transition: background-color 0.5s ease, border-color 0.5s ease;
+    font-family: var(--theme-font); /* Use theme font for input */
+}
+
+.prompt-char {
+    color: var(--theme-accent); /* Use theme accent */
+    margin-right: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    user-select: none;
+    transition: color 0.5s ease;
+    font-family: var(--theme-font); /* Use theme font */
+}
+
+#inputText {
+    flex-grow: 1; /* Fill available space */
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--theme-color); /* Use theme color */
+    font-family: var(--theme-font); /* Use theme font */
+    font-size: 1em;
+    caret-color: var(--theme-accent); /* Use theme accent */
+    transition: color 0.5s ease, font-family 0.5s ease, caret-color 0.5s ease;
+}
+
+#inputText::placeholder {
+    color: rgba(var(--theme-color-rgb, 255,152,0), 0.6); /* Use theme color with transparency */
+}
+
+/* TemPad Menu Container - Fixed width on the side, Themed Background */
+.tempad-menu-container {
+    width: 200px; /* Fixed width for the menu side */
+    background-color: var(--theme-menu-bg); /* Use themed menu background */
+    color: white; /* Default menu text color */
+    padding: 20px 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0; /* Prevent shrinking */
+    font-family: var(--tempad-ui-font); /* Use UI font for menu */
+    transition: background-color 0.5s ease; /* Add transition */
+}
+
+/* TemPad Menu Title - Themed Color */
+.tempad-menu-container h2 {
+    color: var(--theme-title-color); /* Use themed title color */
+    font-size: 1.2em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    flex-shrink: 0;
+     transition: color 0.5s ease; /* Add transition */
+}
+
+#presetButtons {
+    width: 100%; /* Fill menu width */
+    display: flex;
+    flex-direction: column; /* Stack preset names vertically */
+    gap: 8px; /* Space between preset names */
+    flex-grow: 1; /* Allow to grow and fill space */
+    max-height: calc(100% - 40px); /* Calculate max height */
+    overflow-y: auto; /* Enable scrolling */
+    padding-right: 5px; /* Space for scrollbar */
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--theme-accent); /* Use theme accent for separator */
+    transition: border-color 0.5s ease;
+}
+
+/* Style the scrollbar */
+#presetButtons::-webkit-scrollbar { width: 8px; }
+#presetButtons::-webkit-scrollbar-track { background: var(--tempad-dark-brown); border-radius: 4px; }
+#presetButtons::-webkit-scrollbar-thumb { background: var(--tempad-orange); border-radius: 4px; }
+#presetButtons::-webkit-scrollbar-thumb:hover { background: var(--tempad-dark-orange); }
+
+
+/* Styled Preset Name Elements (DIVs) within the menu */
+.preset-name {
+    padding: 8px 12px;
+    border: 1px solid transparent; /* Initial transparent border */
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+    text-align: left; /* Align text left in the menu */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow if name is too long */
+    text-overflow: ellipsis; /* Add ellipsis */
+    background-color: rgba(0, 0, 0, 0.4); /* Make background a bit more opaque for visibility */
+    user-select: none;
+
+    /* Reset CSS variables here so they don't inherit global theme */
+    /* The *inline styles* from JS will provide the specific preset look */
+    color: initial;
+    text-shadow: initial;
+    font-family: initial;
+    filter: initial; /* Reset filter too */
+
+    /* Flexbox for vertical centering */
+    display: flex;
+    align-items: center;
+}
+
+.preset-name:hover {
+    background-color: rgba(0, 0, 0, 0.6); /* Darker background on hover */
+    border-color: var(--tempad-orange); /* Keep TemPad orange border on hover */
+     transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+.preset-name.active {
+    border-color: var(--tempad-orange); /* Highlight active preset with orange */
+    background-color: rgba(var(--tempad-orange-rgb, 255,152,0), 0.2); /* Subtle orange background for active */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.preset-name:active {
+    transform: scale(0.98);
+}
+
+
+/* Remove Surprise Me Preset Styling as it's gone */
+.preset-name[data-preset-type="surprise"] {
+    display: none; /* Ensure it's hidden even if somehow in the list */
+}
+
+
+/* Responsive adjustment for smaller screens */
+@media (max-width: 768px) {
+    .tempad-container {
+        flex-direction: column; /* Stack screen and menu vertically */
+        height: auto; /* Auto height when stacked */
+        width: 98%;
+    }
+     .tempad-menu-container {
+         width: 100%; /* Full width when stacked */
+         flex-direction: row; /* Arrange menu items horizontally */
+         justify-content: space-around; /* Space out items */
+         padding: 10px;
+         max-height: auto;
+         overflow-y: visible; /* Remove vertical scrollbar */
+         border-top: 5px solid var(--tempad-brown); /* Separator */
+     }
+     .tempad-menu-container h2 {
+         display: none; /* Hide title on small screens */
+     }
+     #presetButtons {
+         flex-direction: row; /* Arrange preset names horizontally */
+         flex-wrap: wrap; /* Allow wrapping */
+         gap: 5px;
+         max-height: auto;
+         overflow-y: visible; /* Remove vertical scrollbar */
+         padding-right: 0;
+         justify-content: center;
+     }
+     #presetButtons::-webkit-scrollbar { display: none; }
+     #presetButtons { -ms-overflow-style: none; scrollbar-width: none; }
+
+     .preset-name {
+         min-width: auto; /* Allow names to shrink */
+         font-size: 0.8em;
+         padding: 6px 10px;
+         text-align: center; /* Center text in small buttons */
+     }
+
+     .input-area {
+         padding: 10px 15px;
+     }
+     #inputText {
+         width: auto; /* Auto width */
+     }
+}
