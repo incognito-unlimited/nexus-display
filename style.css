@@ -213,12 +213,15 @@ body {
     background-color: rgba(0, 0, 0, 0.4); /* Make background a bit more opaque for visibility */
     user-select: none;
 
-    /* Reset CSS variables here so they don't inherit global theme */
+    /* Reset CSS properties that might inherit from global theme */
     /* The *inline styles* from JS will provide the specific preset look */
-    color: initial;
-    text-shadow: initial;
-    font-family: initial;
-    filter: initial; /* Reset filter too */
+    color: initial !important; /* Use !important as a last resort if needed for specificity */
+    text-shadow: initial !important;
+    font-family: initial !important;
+    filter: initial !important;
+    font-size: initial !important; /* Ensure font size from inline style applies */
+    line-height: initial !important; /* Ensure line height from inline style applies */
+
 
     /* Flexbox for vertical centering */
     display: flex;
@@ -248,48 +251,74 @@ body {
 }
 
 
-/* Responsive adjustment for smaller screens */
+/* --- Mobile Optimizations --- */
 @media (max-width: 768px) {
     .tempad-container {
         flex-direction: column; /* Stack screen and menu vertically */
-        height: auto; /* Auto height when stacked */
-        width: 98%;
+        height: 100vh; /* Maintain full height */
+        width: 100%; /* Take full width */
     }
      .tempad-menu-container {
          width: 100%; /* Full width when stacked */
          flex-direction: row; /* Arrange menu items horizontally */
-         justify-content: space-around; /* Space out items */
-         padding: 10px;
-         max-height: auto;
-         overflow-y: visible; /* Remove vertical scrollbar */
+         justify-content: center; /* Center items horizontally */
+         padding: 10px 5px; /* Adjust padding */
+         max-height: 80px; /* Limit height to prevent it from taking too much vertical space */
+         overflow-y: hidden; /* Hide vertical overflow */
+         overflow-x: auto; /* Enable horizontal scrolling for presets */
          border-top: 5px solid var(--tempad-brown); /* Separator */
+         flex-wrap: nowrap; /* Prevent wrapping in the horizontal menu */
      }
+
+     /* Hide default scrollbar on mobile horizontal menu */
+     .tempad-menu-container::-webkit-scrollbar { display: none; }
+     .tempad-menu-container { -ms-overflow-style: none; scrollbar-width: none; }
+
+
      .tempad-menu-container h2 {
-         display: none; /* Hide title on small screens */
+         display: none; /* Hide title on small screens to save space */
      }
      #presetButtons {
          flex-direction: row; /* Arrange preset names horizontally */
-         flex-wrap: wrap; /* Allow wrapping */
-         gap: 5px;
-         max-height: auto;
-         overflow-y: visible; /* Remove vertical scrollbar */
+         flex-wrap: nowrap; /* Prevent wrapping */
+         gap: 5px; /* Smaller gap */
+         max-height: none; /* Remove max height */
+         overflow-y: hidden; /* Hide vertical overflow */
+         overflow-x: visible; /* Allow horizontal overflow for container scroll */
          padding-right: 0;
-         justify-content: center;
+         justify-content: flex-start; /* Align buttons to the start for scrolling */
+         align-items: stretch; /* Ensure items stretch to fill row height */
      }
-     #presetButtons::-webkit-scrollbar { display: none; }
-     #presetButtons { -ms-overflow-style: none; scrollbar-width: none; }
+
 
      .preset-name {
-         min-width: auto; /* Allow names to shrink */
-         font-size: 0.8em;
-         padding: 6px 10px;
-         text-align: center; /* Center text in small buttons */
+         flex-shrink: 0; /* Prevent shrinking */
+         min-width: 90px; /* Ensure a minimum width for tapping */
+         font-size: 0.8em; /* Slightly smaller font */
+         padding: 8px 10px; /* Adjust padding for touch */
+         text-align: center; /* Center text in buttons */
+         white-space: nowrap; /* Keep text on one line */
+         text-overflow: ellipsis; /* Add ellipsis if text overflows */
+         overflow: hidden; /* Hide overflow */
+         display: flex; /* Keep flexbox for centering */
+         justify-content: center; /* Center text horizontally */
+         align-items: center; /* Center text vertically */
+     }
+
+     #outputCanvas {
+         font-size: 14px; /* Slightly smaller font for more content on screen */
+         padding: 15px; /* Adjust padding */
      }
 
      .input-area {
-         padding: 10px 15px;
+         padding: 8px 15px; /* Adjust padding */
      }
+
+     .prompt-char {
+         font-size: 1em; /* Adjust prompt character size */
+     }
+
      #inputText {
-         width: auto; /* Auto width */
+         font-size: 0.9em; /* Adjust input text size */
      }
 }
